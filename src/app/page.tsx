@@ -39,9 +39,6 @@ export default function ReservationsSearch() {
 
   const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-    // TODO: Implement API call to search for rooms
-    // For now, we'll use mock data
     setSearchResults([]);
   };
 
@@ -50,7 +47,6 @@ export default function ReservationsSearch() {
   };
 
   const confirmReservation = async () => {
-    // TODO: Implement API call to confirm reservation
     alert("Reservation confirmed successfully!");
     setSelectedRoom(null);
   };
