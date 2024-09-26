@@ -21,3 +21,13 @@ export function enumToOptions<T extends { [key: string]: string | number }>(
     value: value as T[keyof T],
   }));
 }
+
+export function objectToSearchParams<T>(obj: T): URLSearchParams {
+  const searchParams = new URLSearchParams();
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      searchParams.append(key, String(obj[key]));
+    }
+  }
+  return searchParams;
+}
