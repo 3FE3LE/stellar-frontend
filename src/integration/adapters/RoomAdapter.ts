@@ -14,7 +14,7 @@ export const RoomAdapter: RoomRepository = {
     return fetcher(`/rooms/available?${new URLSearchParams(searchParams)}`);
   },
   getHotelInfo: async (): Promise<HotelInfo> => {
-    return fetcher("/hotel");
+    return fetcher("/rooms/hotel");
   },
   getAll: async (): Promise<RoomInterface[]> => {
     return fetcher("/rooms");

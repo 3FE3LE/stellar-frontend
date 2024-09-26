@@ -26,7 +26,12 @@ export function objectToSearchParams<T>(obj: T): URLSearchParams {
   const searchParams = new URLSearchParams();
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      searchParams.append(key, String(obj[key]));
+      const value = obj[key];
+      if (typeof value === "number") {
+        searchParams.append(key, value.toString());
+      } else {
+        searchParams.append(key, String(value));
+      }
     }
   }
   return searchParams;
