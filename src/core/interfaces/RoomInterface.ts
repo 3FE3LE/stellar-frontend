@@ -7,7 +7,7 @@ export interface RoomInterface {
   basePrice: number;
 }
 
-enum RoomType {
+export enum RoomType {
   JUNIOR = "Junior",
   KING = "King",
   PRESIDENTIAL = "Presidential",
