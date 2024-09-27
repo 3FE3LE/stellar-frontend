@@ -1,3 +1,5 @@
+import { RoomInterface } from '../interfaces';
+
 export type RoomSearchInput = {
   checkInDate: string;
   checkOutDate: string;
@@ -5,8 +7,8 @@ export type RoomSearchInput = {
   roomType?: string;
 };
 
-export type HotelInfo = {
+export type AvailableInfo = {
+  availableRooms: RoomInterface[];
   totalRooms: number;
-  availableRooms: number;
-  availableByType:[]
-}
+  reservedRooms: number;
+};

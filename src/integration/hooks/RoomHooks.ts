@@ -2,7 +2,7 @@ import useSWR from 'swr';
 
 import { RoomInterface } from '@/core/interfaces';
 import { RoomRepository } from '@/core/repositories';
-import { HotelInfo, RoomSearchInput } from '@/core/types';
+import { AvailableInfo, RoomSearchInput } from '@/core/types';
 
 import { HookState } from '../types';
 
@@ -29,15 +29,15 @@ export const createRoomHooks = (roomRepository: RoomRepository) => ({
   },
   useRoomAvailable: (
     searchInput: RoomSearchInput
-  ): HookState<RoomInterface> => {
+  ): HookState<AvailableInfo> => {
     const { data, error } = useSWR(["/rooms/available", searchInput], () =>
       roomRepository.getAvailableRooms(searchInput)
     );
 
     return {
-      results: data || [],
+      result: data || undefined,
       isLoading: !data && !error,
       isError: error,
     };
-  }
+  },
 });

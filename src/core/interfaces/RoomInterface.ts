@@ -8,7 +8,7 @@ export interface RoomInterface {
 }
 
 export enum RoomType {
-  JUNIOR = "Junior",
-  KING = "King",
-  PRESIDENTIAL = "Presidential",
+  JUNIOR = "JUNIOR",
+  KING = "KING",
+  PRESIDENTIAL = "PRESIDENTIAL",
 }
