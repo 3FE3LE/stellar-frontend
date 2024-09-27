@@ -26,12 +26,10 @@ export default function ReservationStatus() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {reservations &&
           reservations.map((reservation) => (
-            <Card key={reservation.roomId}>
+            <Card key={reservation.id}>
               <CardHeader>
-                <CardTitle>{reservation.roomId} Room</CardTitle>
-                <CardDescription>
-                  Reservation #{reservation.roomId}
-                </CardDescription>
+                <CardTitle>{reservation.room?.type} Room</CardTitle>
+                <CardDescription>Reservation #{reservation.id}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p>
@@ -42,7 +40,9 @@ export default function ReservationStatus() {
                   Check-out:{" "}
                   {format(new Date(reservation.checkOut), "yyyy-MM-dd")}
                 </p>
-                <p>Guests: {reservation.guests}</p>
+                <p>
+                  Guests: {reservation.guests}/{reservation.room?.maxOccupancy}
+                </p>
                 <p className="font-bold">
                   Total Cost: ${reservation.totalPrice}
                 </p>
