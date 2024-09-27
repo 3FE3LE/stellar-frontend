@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -37,10 +37,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="bg-blue-600 text-white p-4">
+          <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold">StellarStay Hotels</h1>
+            <ThemeToggler />
           </header>
-          <nav className="bg-blue-500 p-4 flex justify-between">
+          <nav className="bg-blue-500 p-4 ">
             <ul className="flex space-x-4">
               <li>
                 <a href="/" className="text-white hover:underline">
@@ -53,7 +54,6 @@ export default function RootLayout({
                 </a>
               </li>
             </ul>
-            <ThemeToggler />
           </nav>
           <main className="container mx-auto p-4">{children}</main>
         </ThemeProvider>
