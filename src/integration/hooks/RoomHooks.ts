@@ -39,14 +39,5 @@ export const createRoomHooks = (roomRepository: RoomRepository) => ({
       isLoading: !data && !error,
       isError: error,
     };
-  },
-  useHotelInfo: (): HookState<HotelInfo> => {
-    const { data, error } = useSWR("/hotel", roomRepository.getHotelInfo);
-
-    return {
-      result: data || undefined,
-      isLoading: !data && !error,
-      isError: error,
-    };
-  },
+  }
 });
