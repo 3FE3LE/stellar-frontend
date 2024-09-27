@@ -20,7 +20,6 @@ export default function ReservationStatus() {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading trips: {isError}</div>;
 
-  const totalCost = 0;
   return (
     <div className="space-y-8">
       <h2 className="text-2xl font-bold">Your Reservations</h2>
@@ -44,7 +43,9 @@ export default function ReservationStatus() {
                   {format(new Date(reservation.checkOut), "yyyy-MM-dd")}
                 </p>
                 <p>Guests: {reservation.guests}</p>
-                <p className="font-bold">Total Cost: ${reservation.totalPrice}</p>
+                <p className="font-bold">
+                  Total Cost: ${reservation.totalPrice}
+                </p>
               </CardContent>
             </Card>
           ))}
