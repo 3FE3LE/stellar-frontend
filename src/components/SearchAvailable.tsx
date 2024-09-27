@@ -20,11 +20,12 @@ type Props = {};
 export const SearchAvailable = ({}: Props) => {
   const roomTypeOptions = enumToOptions(RoomType);
   const {
-    totalRooms,
     searchInput,
+    totalRooms,
+    searchResults,
     setSearchInput,
-    setSearchResults,
     setTotalRooms,
+    setSearchResults,
   } = useRoomStore();
 
   const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -115,7 +116,7 @@ export const SearchAvailable = ({}: Props) => {
       ) : (
         <>
           {" "}
-          Available rooms: {setSearchResults.length - 1}/ {totalRooms}
+          Available rooms: {searchResults.length}/{totalRooms}
         </>
       )}
     </form>
