@@ -1,5 +1,9 @@
-'use client'
-import { RoomInterface } from '@/core/interfaces';
+"use client";
+import { useRouter } from 'next/navigation';
+
+import { ReservationInterface, RoomInterface } from '@/core/interfaces';
+import { createReservation } from '@/integration/actions/ReservationActions';
+import { createGlobalHooks } from '@/integration/hooks';
 import { useRoomStore } from '@/store/RoomStore';
 import { calculateRoomPriceWithBreakdown } from '@/utils';
 
@@ -22,21 +26,33 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 
-interface Props {}
-export const AvailableResults = ({}: Props) => {
+export const AvailableResults = () => {
   const { setSelectedRoom, selectedRoom, searchInput, searchResults } =
     useRoomStore();
+  const router = useRouter();
 
   const handleReserve = (room: RoomInterface) => {
     setSelectedRoom(room);
   };
 
-  const confirmReservation = async () => {
-    alert("Reservation confirmed successfully!");
-    setSelectedRoom(null);
+  const newReservation = {
+    checkIn: new Date(searchInput.checkInDate),
+    checkOut: new Date(searchInput.checkOutDate),
+    guests: searchInput.guests,
+    roomId: selectedRoom?.id,
+    totalPrice: selectedRoom?.basePrice,
   };
 
-  // if (isLoading) return <div>Loading...</div>;
+  const confirmReservation = async () => {
+    await createGlobalHooks<ReservationInterface>("/reservations").useAction(
+      createReservation,
+      [newReservation]
+    );
+
+    setSelectedRoom(null);
+    router.push("/reservations");
+  };
+
   if (searchResults?.length === 0)
     return <div>No available rooms, try a different search</div>;
 
