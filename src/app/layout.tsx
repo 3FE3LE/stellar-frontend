@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import './globals.css';
 
 import localFont from 'next/font/local';
+import Link from 'next/link';
 
 import { ThemeProvider, ThemeToggler } from '@/components';
 
@@ -38,20 +39,30 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold">StellarStay Hotels</h1>
+            <Link prefetch href="/">
+              <h1 className="text-2xl font-bold">StellarStay Hotels</h1>
+            </Link>
             <ThemeToggler />
           </header>
           <nav className="bg-blue-500 p-4 ">
             <ul className="flex space-x-4">
               <li>
-                <a href="/" className="text-white hover:underline">
+                <Link
+                  prefetch
+                  href="/reservations/search"
+                  className="text-white hover:underline"
+                >
                   Search Reservations
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/reservations" className="text-white hover:underline">
+                <Link
+                  prefetch
+                  href="/reservations"
+                  className="text-white hover:underline"
+                >
                   Reservation Status
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
