@@ -1,11 +1,11 @@
 "use client";
-import { RoomTypeInterface } from '@/core/interfaces';
+import { useEffect } from 'react';
+
 import { RoomAdapter, RoomTypeAdapter } from '@/integration/adapters';
 import { createRoomTypeHooks } from '@/integration/hooks';
 import { createRoomHooks } from '@/integration/hooks/RoomHooks';
 import { useRoomStore } from '@/store/RoomStore';
 
-import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import {
@@ -18,18 +18,9 @@ import {
 
 type Props = {};
 export const SearchAvailable = ({}: Props) => {
-  const {
-    searchInput,
-    setSearchInput,
-    setTotalRooms,
-    setSearchResults,
-  } = useRoomStore();
+  const { searchInput, setSearchInput, setTotalRooms, setSearchResults } =
+    useRoomStore();
 
-  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSearchResults(result?.availableRooms || []);
-    setTotalRooms(result?.totalRooms || 0);
-  };
   const { useRoomAvailable } = createRoomHooks(RoomAdapter);
 
   const { result, isLoading, isError } = useRoomAvailable(searchInput);
@@ -37,9 +28,13 @@ export const SearchAvailable = ({}: Props) => {
   const { useRoomTypes } = createRoomTypeHooks(RoomTypeAdapter);
 
   const { results: roomTypeOptions } = useRoomTypes();
+  useEffect(() => {
+    setTotalRooms(result?.totalRooms || 0);
+    setSearchResults(result?.availableRooms || []);
+  }, [result]);
 
   return (
-    <form onSubmit={handleSearch} className="space-y-4">
+    <form className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="space-y-2">
           <Label htmlFor="checkIn">Check-in Date</Label>
@@ -89,9 +84,9 @@ export const SearchAvailable = ({}: Props) => {
             onValueChange={(value) =>
               setSearchInput({
                 ...searchInput,
-                roomTypeId: roomTypeOptions?.find(
-                  (option) => option.id === Number(value)
-                )?.id,
+                roomTypeId:
+                  roomTypeOptions?.find((option) => option.id === Number(value))
+                    ?.id || 0,
               })
             }
           >
@@ -114,15 +109,11 @@ export const SearchAvailable = ({}: Props) => {
           </Select>
         </div>
       </div>
-      <Button type="submit">{isLoading ? "Loading..." : "Show Results"}</Button>
-      {isLoading ? (
-        <> Loading hotel information...</>
-      ) : (
-        <>
-          {" "}
-          Available rooms: {result?.availableRooms.length}/{result?.totalRooms}
-        </>
-      )}
+      <p className="text-sm text-gray-500">
+        {isLoading
+          ? "Loading hotel information..."
+          : `Available rooms: ${result?.availableRooms.length}/${result?.totalRooms}`}
+      </p>
     </form>
   );
 };
