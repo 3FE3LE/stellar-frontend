@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import './globals.css';
 
+import { Hotel, Search } from 'lucide-react';
 import localFont from 'next/font/local';
 import Link from 'next/link';
 import { Toaster } from 'react-hot-toast';
 
-import { ThemeProvider, ThemeToggler } from '@/components';
+import { ThemeProvider, ThemeToggler, ToolTipLinkButton } from '@/components';
+import { Button } from '@/components/ui/button';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,17 +45,17 @@ export default function RootLayout({
             <Link prefetch href="/">
               <h1 className="text-2xl font-bold">StellarStay Hotels</h1>
             </Link>
-            <ThemeToggler />
           </header>
-          <nav className="bg-blue-500 p-4 ">
-            <ul className="flex space-x-4">
+          <nav className="bg-blue-500 p-4 flex justify-between items-center ">
+            <ul className="flex space-x-4 items-center">
               <li>
                 <Link
                   prefetch
                   href="/reservations/search"
-                  className="text-white hover:underline"
+                  className="text-white hover:underline flex items-center gap-1"
                 >
-                  Search Reservations
+                  <Search className="h-[1.2rem] w-[1.2rem]" />
+                  Search
                 </Link>
               </li>
               <li>
@@ -62,8 +64,20 @@ export default function RootLayout({
                   href="/reservations"
                   className="text-white hover:underline"
                 >
-                  Reservation Status
+                  Reservation
                 </Link>
+              </li>
+            </ul>
+            <ul className="flex space-x-4 items-center">
+              <li>
+                <ToolTipLinkButton path="/admin" title="View Pricing Settings">
+                  <Button variant="secondary" size="icon">
+                    <Hotel className="h-[1.2rem] w-[1.2rem]" />
+                  </Button>
+                </ToolTipLinkButton>
+              </li>
+              <li>
+                <ThemeToggler />
               </li>
             </ul>
           </nav>

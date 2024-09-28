@@ -1,5 +1,5 @@
 import { DAYS_IN_MS } from '@/constants';
-import { RoomTypeInterface } from '@/core/interfaces';
+import { RoomTypeInterface, RuleInterface, RuleType } from '@/core/interfaces';
 
 export function objectToSearchParams<T>(obj: T): URLSearchParams {
   const searchParams = new URLSearchParams();
@@ -15,7 +15,16 @@ export function objectToSearchParams<T>(obj: T): URLSearchParams {
   }
   return searchParams;
 }
-
+export const getRuleValues = (arr: RuleInterface[]): Record<string, number> => {
+  return arr.reduce(
+    (acc, rule) => {
+      // Usamos RuleType[rule.ruleType] para obtener el nombre de la enum como clave
+      acc[RuleType[rule.ruleType]] = rule.value;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+};
 interface PriceBreakdown {
   baseRate: number;
   weekendIncrease: number;
@@ -29,6 +38,7 @@ interface PriceCalculationParams {
   checkInDate: Date;
   checkOutDate: Date;
   availabilityPercentage: number; // Availability as a percentage, e.g., 80 for 80%
+  rules: Record<string, number>;
 }
 
 export function calculateRoomPriceWithBreakdown({
@@ -36,6 +46,7 @@ export function calculateRoomPriceWithBreakdown({
   checkInDate,
   checkOutDate,
   availabilityPercentage,
+  rules,
 }: PriceCalculationParams): PriceBreakdown {
   const baseRate = roomType ? roomType.basePrice : 0;
   let totalBasePrice = 0;
@@ -43,6 +54,7 @@ export function calculateRoomPriceWithBreakdown({
   let rentalDaysDiscount = 0;
   let availabilityIncrease = 0;
 
+  // fix dates adding 1 day
   checkInDate.setDate(checkInDate.getDate() + 1);
   checkOutDate.setDate(checkOutDate.getDate() + 1);
 
@@ -53,7 +65,6 @@ export function calculateRoomPriceWithBreakdown({
   };
 
   // Calculate number of days
-
   const rentalDays = Math.ceil(
     (checkOutDate.getTime() - checkInDate.getTime()) / DAYS_IN_MS
   );
@@ -65,7 +76,7 @@ export function calculateRoomPriceWithBreakdown({
     let currentRate = baseRate;
 
     if (isWeekend(currentDate)) {
-      weekendIncrease += currentRate * 0.25; // Accumulate weekend increase
+      weekendIncrease += currentRate * (rules[0] / 100); // Accumulate weekend increase by default
     }
 
     totalBasePrice += currentRate;
@@ -73,9 +84,9 @@ export function calculateRoomPriceWithBreakdown({
 
   // Apply rental days discount
   if (rentalDays >= 4 && rentalDays <= 6) {
-    rentalDaysDiscount = rentalDays * 4; // $4 per day discount
+    rentalDaysDiscount = rentalDays * rules[1]; // $4 per day discount
   } else if (rentalDays >= 7 && rentalDays <= 9) {
-    rentalDaysDiscount = rentalDays * 8; // $8 per day discount
+    rentalDaysDiscount = rentalDays * rules[2]; // $8 per day discount by default
   } else if (rentalDays >= 10) {
     rentalDaysDiscount = rentalDays * 12; // $12 per day discount
   }
@@ -84,13 +95,13 @@ export function calculateRoomPriceWithBreakdown({
 
   // Apply availability price increase
   if (availabilityPercentage < 20) {
-    availabilityIncrease = totalPrice * 0.15; // 15% increase
+    totalPrice += totalPrice * 0.15; // 15% increase
   } else if (availabilityPercentage >= 20 && availabilityPercentage < 40) {
-    availabilityIncrease = totalPrice * 0.1; // 10% increase
+    totalPrice += totalPrice * (rules[5] / 100); // 10% increase by default
   } else if (availabilityPercentage >= 40 && availabilityPercentage < 60) {
-    availabilityIncrease = totalPrice * 0.05; // 5% increase
+    totalPrice += totalPrice * (rules[4] / 100); // 5% increase by default
   } else if (availabilityPercentage >= 60 && availabilityPercentage < 80) {
-    availabilityIncrease = totalPrice * 0.02; // 2% increase
+    totalPrice += totalPrice * (rules[3] / 100); // 2% increase by default
   }
 
   totalPrice += availabilityIncrease;

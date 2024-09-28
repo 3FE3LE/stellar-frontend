@@ -18,7 +18,7 @@ export const ReservationAdapter: ReservationRepository = {
     id: number,
     data: ReservationInterface
   ): Promise<ReservationInterface> => {
-    return apiRequest(`/reservations/${id}`, "PUT", data);
+    return apiRequest(`/reservations/${id}`, "PATCH", data);
   },
   delete: async (id: number): Promise<ReservationInterface> => {
     return apiRequest(`/reservations/${id}`, "DELETE");

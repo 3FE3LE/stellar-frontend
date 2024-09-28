@@ -15,7 +15,7 @@ export const RuleAdapter: RuleRepository = {
     return apiRequest("/rules", "POST", data);
   },
   update: async (id: number, data: RuleInterface): Promise<RuleInterface> => {
-    return apiRequest(`/rules/${id}`, "PUT", data);
+    return apiRequest(`/rules/${id}`, "PATCH", data);
   },
   delete: async (id: number): Promise<RuleInterface> => {
     return apiRequest(`/rules/${id}`, "DELETE");
