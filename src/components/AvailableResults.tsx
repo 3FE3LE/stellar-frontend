@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { ReservationInterface, RoomInterface } from '@/core/interfaces';
 import { createReservation } from '@/integration/actions/ReservationActions';
@@ -27,8 +28,13 @@ import {
 } from './ui/dialog';
 
 export const AvailableResults = () => {
-  const { setSelectedRoom, selectedRoom, searchInput, searchResults, totalRooms } =
-    useRoomStore();
+  const {
+    setSelectedRoom,
+    selectedRoom,
+    searchInput,
+    searchResults,
+    totalRooms,
+  } = useRoomStore();
   const router = useRouter();
 
   const handleReserve = (room: RoomInterface) => {
@@ -44,11 +50,21 @@ export const AvailableResults = () => {
   };
 
   const confirmReservation = async () => {
-    
-    await createGlobalHooks<ReservationInterface>("/reservations").useAction(
-      createReservation,
-      [newReservation]
-    );
+    toast.loading("Creating reservation...");
+
+    const {
+      data: createdReservation,
+      isError,
+      isLoading,
+    } = await createGlobalHooks<ReservationInterface>(
+      "/reservations"
+    ).useAction(createReservation, [newReservation]);
+
+    if (!isLoading) toast.dismiss();
+
+    if (createdReservation) toast.success("Reservation created successfully!");
+
+    if (isError) toast.error("Error creating reservation");
 
     setSelectedRoom(null);
     router.push("/reservations");
@@ -69,15 +85,21 @@ export const AvailableResults = () => {
             totalPrice,
           } = calculateRoomPriceWithBreakdown({
             roomType: room.type,
-            checkInDate: new Date(new Date(searchInput.checkInDate).getDate()+1),
-            checkOutDate: new Date(new Date(searchInput.checkOutDate).getDate()+1),
+            checkInDate: new Date(
+              new Date(searchInput.checkInDate).getDate() + 1
+            ),
+            checkOutDate: new Date(
+              new Date(searchInput.checkOutDate).getDate() + 1
+            ),
             availabilityPercentage: (searchResults.length / totalRooms) * 100,
           });
 
           return (
             <Card key={room.id}>
               <CardHeader>
-                <CardTitle className="capitalize">{room.type.name} Room</CardTitle>
+                <CardTitle className="capitalize">
+                  {room.type.name} Room
+                </CardTitle>
                 <CardDescription>
                   {room.beds} bed(s) | Max occupancy: {room.maxOccupancy}
                 </CardDescription>

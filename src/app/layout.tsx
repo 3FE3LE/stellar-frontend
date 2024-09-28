@@ -3,6 +3,7 @@ import './globals.css';
 
 import localFont from 'next/font/local';
 import Link from 'next/link';
+import { Toaster } from 'react-hot-toast';
 
 import { ThemeProvider, ThemeToggler } from '@/components';
 
@@ -66,7 +67,10 @@ export default function RootLayout({
               </li>
             </ul>
           </nav>
-          <main className="container mx-auto p-4">{children}</main>
+          <main className="container mx-auto p-4">
+            {children}
+            <Toaster />
+          </main>
         </ThemeProvider>
       </body>
     </html>
