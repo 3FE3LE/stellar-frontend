@@ -20,8 +20,6 @@ type Props = {};
 export const SearchAvailable = ({}: Props) => {
   const {
     searchInput,
-    totalRooms,
-    searchResults,
     setSearchInput,
     setTotalRooms,
     setSearchResults,

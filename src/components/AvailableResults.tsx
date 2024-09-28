@@ -44,6 +44,7 @@ export const AvailableResults = () => {
   };
 
   const confirmReservation = async () => {
+    
     await createGlobalHooks<ReservationInterface>("/reservations").useAction(
       createReservation,
       [newReservation]
