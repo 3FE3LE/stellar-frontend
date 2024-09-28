@@ -87,13 +87,13 @@ export const SearchAvailable = ({}: Props) => {
         <div className="space-y-2">
           <Label htmlFor="roomType">Room Type</Label>
           <Select
-            value={`${searchInput.roomType?.name}`}
+            value={`${searchInput.roomTypeId}`}
             onValueChange={(value) =>
               setSearchInput({
                 ...searchInput,
-                roomType: roomTypeOptions?.find(
-                  (option) => option.name === value
-                ),
+                roomTypeId: roomTypeOptions?.find(
+                  (option) => option.id === Number(value)
+                )?.id,
               })
             }
           >
@@ -107,7 +107,7 @@ export const SearchAvailable = ({}: Props) => {
                   <SelectItem
                     className="capitalize"
                     key={option.id}
-                    value={option.name}
+                    value={`${option.id}`}
                   >
                     {option.name}
                   </SelectItem>
@@ -116,13 +116,13 @@ export const SearchAvailable = ({}: Props) => {
           </Select>
         </div>
       </div>
-      <Button type="submit">Search</Button>
+      <Button type="submit">{isLoading ? "Loading..." : "Show Results"}</Button>
       {isLoading ? (
         <> Loading hotel information...</>
       ) : (
         <>
           {" "}
-          Available rooms: {searchResults.length}/{totalRooms}
+          Available rooms: {result?.availableRooms.length}/{result?.totalRooms}
         </>
       )}
     </form>

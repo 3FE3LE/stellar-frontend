@@ -4,7 +4,7 @@ export type RoomSearchInput = {
   checkInDate: string;
   checkOutDate: string;
   guests: number;
-  roomType?: RoomTypeInterface;
+  roomTypeId?: number;
 };
 
 export type AvailableInfo = {
