@@ -1,10 +1,10 @@
-import { RoomInterface } from '../interfaces';
+import { RoomInterface, RoomTypeInterface } from '../interfaces';
 
 export type RoomSearchInput = {
   checkInDate: string;
   checkOutDate: string;
   guests: number;
-  roomType?: string;
+  roomType?: RoomTypeInterface;
 };
 
 export type AvailableInfo = {
