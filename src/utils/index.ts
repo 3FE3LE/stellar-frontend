@@ -95,13 +95,13 @@ export function calculateRoomPriceWithBreakdown({
 
   // Apply availability price increase
   if (availabilityPercentage < 20) {
-    totalPrice += totalPrice * 0.15; // 15% increase
+    availabilityIncrease += totalPrice * 0.15; // 15% increase
   } else if (availabilityPercentage >= 20 && availabilityPercentage < 40) {
-    totalPrice += totalPrice * (rules[5] / 100); // 10% increase by default
+    availabilityIncrease += totalPrice * (rules[5] / 100); // 10% increase by default
   } else if (availabilityPercentage >= 40 && availabilityPercentage < 60) {
-    totalPrice += totalPrice * (rules[4] / 100); // 5% increase by default
+    availabilityIncrease += totalPrice * (rules[4] / 100); // 5% increase by default
   } else if (availabilityPercentage >= 60 && availabilityPercentage < 80) {
-    totalPrice += totalPrice * (rules[3] / 100); // 2% increase by default
+    availabilityIncrease += totalPrice * (rules[3] / 100); // 2% increase by default
   }
 
   totalPrice += availabilityIncrease;
