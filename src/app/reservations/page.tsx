@@ -28,7 +28,7 @@ export default function ReservationStatus() {
           reservations.map((reservation) => (
             <Card key={reservation.id}>
               <CardHeader>
-                <CardTitle>{reservation.room?.type} Room</CardTitle>
+                <CardTitle>{reservation.room?.type.name} Room</CardTitle>
                 <CardDescription>Reservation #{reservation.id}</CardDescription>
               </CardHeader>
               <CardContent>
