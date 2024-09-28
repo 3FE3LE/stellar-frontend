@@ -23,7 +23,7 @@ export const RoomAdapter: RoomRepository = {
     return apiRequest("/rooms", "POST", data);
   },
   update: async (id: number, data: RoomInterface): Promise<RoomInterface> => {
-    return apiRequest(`/rooms/${id}`, "PUT", data);
+    return apiRequest(`/rooms/${id}`, "PATCH", data);
   },
   delete: async (id: number): Promise<RoomInterface> => {
     return apiRequest(`/rooms/${id}`, "DELETE");

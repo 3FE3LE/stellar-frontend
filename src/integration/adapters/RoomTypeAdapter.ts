@@ -18,7 +18,7 @@ export const RoomTypeAdapter: RoomTypeRepository = {
     id: number,
     data: RoomTypeInterface
   ): Promise<RoomTypeInterface> => {
-    return apiRequest(`/room-types/${id}`, "PUT", data);
+    return apiRequest(`/room-types/${id}`, "PATCH", data);
   },
   delete: async (id: number): Promise<RoomTypeInterface> => {
     return apiRequest(`/room-types/${id}`, "DELETE");
