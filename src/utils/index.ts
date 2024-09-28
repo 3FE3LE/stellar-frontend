@@ -37,11 +37,14 @@ export function calculateRoomPriceWithBreakdown({
   checkOutDate,
   availabilityPercentage,
 }: PriceCalculationParams): PriceBreakdown {
-  const baseRate = roomType? roomType.basePrice : 0;
+  const baseRate = roomType ? roomType.basePrice : 0;
   let totalBasePrice = 0;
   let weekendIncrease = 0;
   let rentalDaysDiscount = 0;
   let availabilityIncrease = 0;
+
+  checkInDate.setDate(checkInDate.getDate() + 1);
+  checkOutDate.setDate(checkOutDate.getDate() + 1);
 
   // Helper to check if a date is weekend
   const isWeekend = (date: Date): boolean => {
@@ -50,7 +53,7 @@ export function calculateRoomPriceWithBreakdown({
   };
 
   // Calculate number of days
-  
+
   const rentalDays = Math.ceil(
     (checkOutDate.getTime() - checkInDate.getTime()) / DAYS_IN_MS
   );
