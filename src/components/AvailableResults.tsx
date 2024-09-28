@@ -68,8 +68,8 @@ export const AvailableResults = () => {
             totalPrice,
           } = calculateRoomPriceWithBreakdown({
             roomType: room.type,
-            checkInDate: new Date(searchInput.checkInDate),
-            checkOutDate: new Date(searchInput.checkOutDate),
+            checkInDate: new Date(new Date(searchInput.checkInDate).getDate()+1),
+            checkOutDate: new Date(new Date(searchInput.checkOutDate).getDate()+1),
             availabilityPercentage: (searchResults.length / totalRooms) * 100,
           });
 
