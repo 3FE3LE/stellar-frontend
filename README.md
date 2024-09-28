@@ -9,10 +9,11 @@ Este es el frontend de la aplicación Stellar, desarrollado con **Next.js** y **
     📁 src
         📁 app
             📁 reservations         # Página de búsqueda de habitaciones
+            📁 admin                # Página de administracion de reglas
                 ─ page.tsx
             ─ globals.css           # Estilos globales
             ─ layout.tsx            # Diseño general de la aplicación
-            ─ page.tsx              # Página principal
+            ─ page.tsx              # Página principal 
         📁 components               # Componentes reutilizables
             📁 ui                   # Elementos de interfaz de usuario
                 ─ button.tsx
