@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { RoomAdapter, RoomTypeAdapter } from '@/integration/adapters';
 import { createRoomTypeHooks } from '@/integration/hooks';
 import { createRoomHooks } from '@/integration/hooks/RoomHooks';
-import { useRoomStore } from '@/store/RoomStore';
+import { useRoomStore } from '@/store';
 
 import { Input } from './ui/input';
 import { Label } from './ui/label';

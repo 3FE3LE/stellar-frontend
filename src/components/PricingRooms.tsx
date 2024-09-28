@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { rooms } from '@/constants';
 import { cn } from '@/lib/utils';
-import { useRoomStore } from '@/store/RoomStore';
+import { useRoomStore } from '@/store';
 
 import { Button } from './ui/button';
 import {

@@ -34,7 +34,7 @@ import { RuleInterface } from '@/core/interfaces';
 import { updateRule } from '@/integration/actions/RuleActions';
 import { RuleAdapter } from '@/integration/adapters';
 import { createGlobalHooks, createRuleHooks } from '@/integration/hooks';
-import { useRuleStore } from '@/store/RuleStore';
+import { useRuleStore } from '@/store';
 
 export default function DynamicPricingRules() {
   const { setEditingRule, editingRule } = useRuleStore();

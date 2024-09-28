@@ -6,7 +6,7 @@ import { ReservationInterface, RoomInterface } from '@/core/interfaces';
 import { createReservation } from '@/integration/actions/ReservationActions';
 import { RuleAdapter } from '@/integration/adapters';
 import { createGlobalHooks, createRuleHooks } from '@/integration/hooks';
-import { useRoomStore } from '@/store/RoomStore';
+import { useRoomStore } from '@/store';
 import { calculateRoomPriceWithBreakdown, getRuleValues } from '@/utils';
 
 import { Button } from './ui/button';
