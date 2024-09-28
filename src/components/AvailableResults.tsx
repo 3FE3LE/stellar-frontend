@@ -82,6 +82,10 @@ export const AvailableResults = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {searchResults.map((room) => {
           const pricingRules = getRuleValues(rules!);
+          //get total rooms by type
+          const totalRoomsByType = searchResults.filter(
+            (room) => room.typeId === room.type.id
+          ).length;
           const {
             baseRate,
             weekendIncrease,
@@ -92,7 +96,8 @@ export const AvailableResults = () => {
             roomType: room.type,
             checkInDate: new Date(searchInput.checkInDate),
             checkOutDate: new Date(searchInput.checkOutDate),
-            availabilityPercentage: (searchResults.length / totalRooms) * 100,
+            availabilityPercentage:
+              (searchResults.length / totalRoomsByType) * 100,
             rules: pricingRules,
           });
 
