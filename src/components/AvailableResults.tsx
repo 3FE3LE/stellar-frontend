@@ -4,9 +4,10 @@ import toast from 'react-hot-toast';
 
 import { ReservationInterface, RoomInterface } from '@/core/interfaces';
 import { createReservation } from '@/integration/actions/ReservationActions';
-import { createGlobalHooks } from '@/integration/hooks';
+import { RuleAdapter } from '@/integration/adapters';
+import { createGlobalHooks, createRuleHooks } from '@/integration/hooks';
 import { useRoomStore } from '@/store/RoomStore';
-import { calculateRoomPriceWithBreakdown } from '@/utils';
+import { calculateRoomPriceWithBreakdown, getRuleValues } from '@/utils';
 
 import { Button } from './ui/button';
 import {
@@ -37,9 +38,9 @@ export const AvailableResults = () => {
   } = useRoomStore();
   const router = useRouter();
 
-  const handleReserve = (room: RoomInterface) => {
-    setSelectedRoom(room);
-  };
+  const { useRules } = createRuleHooks(RuleAdapter);
+
+  const { results: rules } = useRules();
 
   const newReservation = {
     checkIn: new Date(searchInput.checkInDate),
@@ -49,6 +50,9 @@ export const AvailableResults = () => {
     totalPrice: selectedRoom?.type.basePrice,
   };
 
+  const handleReserve = (room: RoomInterface) => {
+    setSelectedRoom(room);
+  };
   const confirmReservation = async () => {
     toast.loading("Creating reservation...");
 
@@ -77,6 +81,7 @@ export const AvailableResults = () => {
     searchResults && (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {searchResults.map((room) => {
+          const pricingRules = getRuleValues(rules!);
           const {
             baseRate,
             weekendIncrease,
@@ -88,6 +93,7 @@ export const AvailableResults = () => {
             checkInDate: new Date(searchInput.checkInDate),
             checkOutDate: new Date(searchInput.checkOutDate),
             availabilityPercentage: (searchResults.length / totalRooms) * 100,
+            rules: pricingRules,
           });
 
           return (
