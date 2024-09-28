@@ -1,8 +1,7 @@
 import { format } from 'date-fns';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
-import { RoomInterface, RoomType } from '@/core/interfaces';
+import { RoomInterface } from '@/core/interfaces';
 import { RoomSearchInput } from '@/core/types';
 
 interface RoomState {
@@ -29,17 +28,10 @@ const initialState: RoomState = {
   totalRooms: 0,
 };
 
-export const useRoomStore = create<RoomState & RoomActions>()(
-  persist(
-    (set) => ({
-      ...initialState,
-      setSearchResults: (searchResults) => set({ searchResults }),
-      setSearchInput: (searchInput: RoomSearchInput) => set({ searchInput }),
-      setSelectedRoom: (selectedRoom) => set({ selectedRoom }),
-      setTotalRooms: (totalRooms) => set({ totalRooms }),
-    }),
-    {
-      name: "room-storage",
-    }
-  )
-);
+export const useRoomStore = create<RoomState & RoomActions>()((set) => ({
+  ...initialState,
+  setSearchResults: (searchResults) => set({ searchResults }),
+  setSearchInput: (searchInput: RoomSearchInput) => set({ searchInput }),
+  setSelectedRoom: (selectedRoom) => set({ selectedRoom }),
+  setTotalRooms: (totalRooms) => set({ totalRooms }),
+}));

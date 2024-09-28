@@ -1,23 +1,5 @@
-import { RoomType } from '@/core/interfaces';
-
-interface SelectOption<T extends string | number> {
-  label: string;
-  value: T;
-}
-export function enumToOptions<T extends { [key: string]: string | number }>(
-  enumObject: T
-): SelectOption<T[keyof T]>[] {
-  const LabelGenerator = (key: string) =>
-    key
-      .split("_")
-      .map((word) => word)
-      .join(" ");
-
-  return Object.entries(enumObject).map(([key, value]) => ({
-    label: LabelGenerator(key),
-    value: value as T[keyof T],
-  }));
-}
+import { DAYS_IN_MS } from '@/constants';
+import { RoomTypeInterface } from '@/core/interfaces';
 
 export function objectToSearchParams<T>(obj: T): URLSearchParams {
   const searchParams = new URLSearchParams();
@@ -43,7 +25,7 @@ interface PriceBreakdown {
 }
 
 interface PriceCalculationParams {
-  roomType: RoomType;
+  roomType: RoomTypeInterface;
   checkInDate: Date;
   checkOutDate: Date;
   availabilityPercentage: number; // Availability as a percentage, e.g., 80 for 80%
@@ -55,14 +37,7 @@ export function calculateRoomPriceWithBreakdown({
   checkOutDate,
   availabilityPercentage,
 }: PriceCalculationParams): PriceBreakdown {
-  // Base rates per room type
-  const baseRates: Record<RoomType, number> = {
-    JUNIOR: 60,
-    KING: 90,
-    PRESIDENTIAL: 150,
-  };
-
-  const baseRate = baseRates[roomType];
+  const baseRate = roomType? roomType.basePrice : 0;
   let totalBasePrice = 0;
   let weekendIncrease = 0;
   let rentalDaysDiscount = 0;
@@ -71,13 +46,13 @@ export function calculateRoomPriceWithBreakdown({
   // Helper to check if a date is weekend
   const isWeekend = (date: Date): boolean => {
     const day = date.getDay(); // 0 = Sunday, 6 = Saturday
-    return day === 6 || day === 5;
+    return day === 6 || day === 0;
   };
 
   // Calculate number of days
-  const dayInMilliseconds = 1000 * 60 * 60 * 24;
+  
   const rentalDays = Math.ceil(
-    (checkOutDate.getTime() - checkInDate.getTime()) / dayInMilliseconds
+    (checkOutDate.getTime() - checkInDate.getTime()) / DAYS_IN_MS
   );
 
   // Apply base rate and weekend increase
