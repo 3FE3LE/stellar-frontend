@@ -22,6 +22,7 @@ const initialState: RoomState = {
     checkInDate: format(new Date(), "yyyy-MM-dd"),
     checkOutDate: format(new Date(), "yyyy-MM-dd"),
     guests: 1,
+    roomTypeId: 0,
   },
   selectedRoom: null,
   searchResults: [],
