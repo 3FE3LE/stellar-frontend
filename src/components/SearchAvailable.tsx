@@ -1,9 +1,9 @@
 "use client";
-import { RoomType } from '@/core/interfaces';
-import { RoomAdapter } from '@/integration/adapters';
+import { RoomTypeInterface } from '@/core/interfaces';
+import { RoomAdapter, RoomTypeAdapter } from '@/integration/adapters';
+import { createRoomTypeHooks } from '@/integration/hooks';
 import { createRoomHooks } from '@/integration/hooks/RoomHooks';
 import { useRoomStore } from '@/store/RoomStore';
-import { enumToOptions } from '@/utils';
 
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -18,7 +18,6 @@ import {
 
 type Props = {};
 export const SearchAvailable = ({}: Props) => {
-  const roomTypeOptions = enumToOptions(RoomType);
   const {
     searchInput,
     totalRooms,
@@ -36,6 +35,10 @@ export const SearchAvailable = ({}: Props) => {
   const { useRoomAvailable } = createRoomHooks(RoomAdapter);
 
   const { result, isLoading, isError } = useRoomAvailable(searchInput);
+
+  const { useRoomTypes } = createRoomTypeHooks(RoomTypeAdapter);
+
+  const { results: roomTypeOptions } = useRoomTypes();
 
   return (
     <form onSubmit={handleSearch} className="space-y-4">
@@ -84,11 +87,13 @@ export const SearchAvailable = ({}: Props) => {
         <div className="space-y-2">
           <Label htmlFor="roomType">Room Type</Label>
           <Select
-            value={searchInput.roomType}
+            value={`${searchInput.roomType?.name}`}
             onValueChange={(value) =>
               setSearchInput({
                 ...searchInput,
-                roomType: value !== "any" ? value : "",
+                roomType: roomTypeOptions?.find(
+                  (option) => option.name === value
+                ),
               })
             }
           >
@@ -96,16 +101,17 @@ export const SearchAvailable = ({}: Props) => {
               <SelectValue placeholder="Select room type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="any">Any</SelectItem>
-              {roomTypeOptions.map((option) => (
-                <SelectItem
-                  className="capitalize"
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </SelectItem>
-              ))}
+              <SelectItem value="0">Any</SelectItem>
+              {roomTypeOptions &&
+                roomTypeOptions.map((option) => (
+                  <SelectItem
+                    className="capitalize"
+                    key={option.id}
+                    value={option.name}
+                  >
+                    {option.name}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

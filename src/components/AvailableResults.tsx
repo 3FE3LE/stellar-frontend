@@ -27,7 +27,7 @@ import {
 } from './ui/dialog';
 
 export const AvailableResults = () => {
-  const { setSelectedRoom, selectedRoom, searchInput, searchResults } =
+  const { setSelectedRoom, selectedRoom, searchInput, searchResults, totalRooms } =
     useRoomStore();
   const router = useRouter();
 
@@ -40,7 +40,7 @@ export const AvailableResults = () => {
     checkOut: new Date(searchInput.checkOutDate),
     guests: searchInput.guests,
     roomId: selectedRoom?.id,
-    totalPrice: selectedRoom?.basePrice,
+    totalPrice: selectedRoom?.type.basePrice,
   };
 
   const confirmReservation = async () => {
@@ -70,20 +70,20 @@ export const AvailableResults = () => {
             roomType: room.type,
             checkInDate: new Date(searchInput.checkInDate),
             checkOutDate: new Date(searchInput.checkOutDate),
-            availabilityPercentage: (searchResults.length / 3) * 100,
+            availabilityPercentage: (searchResults.length / totalRooms) * 100,
           });
 
           return (
             <Card key={room.id}>
               <CardHeader>
-                <CardTitle className="capitalize">{room.type} Room</CardTitle>
+                <CardTitle className="capitalize">{room.type.name} Room</CardTitle>
                 <CardDescription>
                   {room.beds} bed(s) | Max occupancy: {room.maxOccupancy}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p>{room.oceanView ? "Ocean view" : "No ocean view"}</p>
-                <p className="font-bold">${room.basePrice} per night</p>
+                <p className="font-bold">${room.type.basePrice} per night</p>
                 <p>Total: ${totalPrice.toFixed(2)}</p>
               </CardContent>
               <CardFooter className="flex justify-between">
@@ -128,7 +128,7 @@ export const AvailableResults = () => {
               <DialogHeader>
                 <DialogTitle>Confirm Reservation</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to reserve this {selectedRoom.type}{" "}
+                  Are you sure you want to reserve this {selectedRoom.type.name}{" "}
                   room?
                 </DialogDescription>
               </DialogHeader>
