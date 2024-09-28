@@ -1,16 +1,5 @@
 "use client";
-
-import { useState } from 'react';
-
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -18,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -55,7 +43,7 @@ export default function DynamicPricingRules() {
 
   const { useRules } = createRuleHooks(RuleAdapter);
 
-  const { results: rules, isLoading, isError } = useRules();
+  const { results: rules } = useRules();
 
   return (
     <div className="container mx-auto p-4">
